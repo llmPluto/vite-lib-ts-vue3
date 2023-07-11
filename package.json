@@ -3,15 +3,16 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "types": "lib/types/index.d.ts",
   "files": [
     "lib"
   ],
-  "main": "./lib/index.umd.cjs",
-  "module": "./lib/index.mjs",
+  "main": "./lib/index.cjs",
+  "module": "./lib/indexjs",
   "exports": {
     ".": {
-      "import": "./lib/index.mjs",
-      "require": "./lib/index.umd.cjs"
+      "import": "./lib/index.js",
+      "require": "./lib/index.cjs"
     }
   },
   "scripts": {
@@ -23,13 +24,13 @@
     "vue": "^3.3.4"
   },
   "devDependencies": {
-    "@rollup/plugin-typescript": "^11.1.2",
     "@types/node": "^20.4.1",
     "@vitejs/plugin-vue": "^4.2.3",
     "path": "^0.12.7",
     "tslib": "^2.6.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.0",
+    "vite-plugin-dts": "^3.2.0",
     "vue-tsc": "^1.8.3"
   }
 }

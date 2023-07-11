@@ -29,9 +29,10 @@ export default defineConfig({
   build: {
     lib: {
       // Could also be a dictionary or array of multiple entry points
-      entry: pathList,
-      // entry: resolve(__dirname, "packages/main.ts"),
-      name: "MyLib",
+      // entry: pathList,
+      entry: resolve(__dirname, "packages/main.ts"),
+      formats: ["cjs", "es"],
+      // name: "MyLib",
       // the proper extensions will be added
       fileName: "index",
     },
@@ -45,6 +46,7 @@ export default defineConfig({
           vue: "Vue",
         },
         dir: "lib",
+        exports: "named",
       },
     },
   },
