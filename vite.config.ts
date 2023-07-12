@@ -1,22 +1,12 @@
 /**
- * @description 项目模式
- */
-// import { defineConfig } from 'vite'
-// import vue from '@vitejs/plugin-vue'
-
-// // https://vitejs.dev/config/
-// export default defineConfig({
-//   plugins: [vue()],
-// })
-
-/**
  * @description 库模式
  */
 import { resolve } from "path";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import fs from "fs";
-import { libInjectCss, scanEntries } from "vite-plugin-lib-inject-css";
+import { libInjectCss } from "vite-plugin-lib-inject-css";
+import { Terser } from "vite";
 
 const files = fs.readdirSync(resolve(__dirname, "packages/components"));
 const pathMap: { [name: string]: string } = {};
@@ -40,9 +30,14 @@ export default defineConfig({
       less: {},
     },
   },
+  esbuild: {
+    drop: ["console", "debugger"],
+    jsx: "preserve",
+  },
   build: {
     // 严格分割每个样式文件
     cssCodeSplit: true,
+    // 压缩
     lib: {
       // Could also be a dictionary or array of multiple entry points
       // entry: pathList,
