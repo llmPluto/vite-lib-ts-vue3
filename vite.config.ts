@@ -18,23 +18,35 @@ import vue from "@vitejs/plugin-vue";
 import fs from "fs";
 
 const files = fs.readdirSync(resolve(__dirname, "packages/components"));
-const pathList: string[] = [];
+const pathMap: { [name: string]: string } = {};
 
 files.forEach((key) => {
-  pathList.push(resolve(__dirname, "packages/components") + `/${key}/index.ts`);
+  pathMap[`components/${key}/W${key}`] =
+    resolve(__dirname, "packages/components") + `/${key}/index.ts`;
 });
 
 export default defineConfig({
   plugins: [vue()],
+  // 以下好像只会将css提取到一个文件中，而不会引用
+  css: {
+    preprocessorOptions: {
+      less: {},
+    },
+  },
   build: {
     lib: {
       // Could also be a dictionary or array of multiple entry points
       // entry: pathList,
-      entry: resolve(__dirname, "packages/main.ts"),
-      formats: ["cjs", "es"],
+      entry: {
+        index: resolve(__dirname, "packages/index.ts"),
+        ...pathMap,
+      },
+      // formats: ["cjs", "es"],
+      formats: ["es"],
       // name: "MyLib",
       // the proper extensions will be added
-      fileName: "index",
+      // 默认
+      fileName: "[name]",
     },
     rollupOptions: {
       treeshake: true,
@@ -42,11 +54,10 @@ export default defineConfig({
       external: ["vue"],
       output: {
         // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
-        globals: {
-          vue: "Vue",
-        },
+        // globals: {
+        //   vue: "Vue",
+        // },
         dir: "lib",
-        exports: "named",
       },
     },
   },

@@ -1,8 +1,8 @@
 import type { App } from "vue";
-import Foo from "./components/Foo";
-import Bar from "./components/Bar";
+import WSideBar from "./components/SideBar";
+import WSideBarItem from "./components/SideBarItem";
 
-const components = [Foo, Bar];
+const components = [WSideBar, WSideBarItem];
 
 const install = (app: App) => {
   components.forEach((component) => {
@@ -14,4 +14,4 @@ export default {
   install,
 };
 
-export { Foo, Bar };
+export { WSideBar, WSideBarItem };

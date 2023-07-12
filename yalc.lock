@@ -1,0 +1,9 @@
+{
+  "version": "v1",
+  "packages": {
+    "my-vue-lib": {
+      "signature": "6c539c4a1ab3ecedcb0a3555cf79dacf",
+      "file": true
+    }
+  }
+}
