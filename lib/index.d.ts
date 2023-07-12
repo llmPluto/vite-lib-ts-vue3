@@ -1,6 +1,6 @@
 import type { App } from "vue";
-import WSideBar from "./components/SideBar";
-import WSideBarItem from "./components/SideBarItem";
+import WSideBar from "./components/WSideBar";
+import WSideBarItem from "./components/WSideBarItem";
 declare const _default: {
     install: (app: App<any>) => void;
 };

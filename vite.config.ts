@@ -16,24 +16,33 @@ import { resolve } from "path";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import fs from "fs";
+import { libInjectCss, scanEntries } from "vite-plugin-lib-inject-css";
 
 const files = fs.readdirSync(resolve(__dirname, "packages/components"));
 const pathMap: { [name: string]: string } = {};
-
 files.forEach((key) => {
-  pathMap[`components/${key}/W${key}`] =
+  pathMap[`components/${key}/index`] =
     resolve(__dirname, "packages/components") + `/${key}/index.ts`;
 });
 
+const compCssMap = (() => {
+  const tempMap: { [key: string]: string | undefined } = {};
+  Object.keys(pathMap).forEach((key) => {
+    tempMap[key] = undefined;
+  });
+  return tempMap;
+})();
+
 export default defineConfig({
-  plugins: [vue()],
-  // 以下好像只会将css提取到一个文件中，而不会引用
+  plugins: [vue(), libInjectCss()],
   css: {
     preprocessorOptions: {
       less: {},
     },
   },
   build: {
+    // 严格分割每个样式文件
+    cssCodeSplit: true,
     lib: {
       // Could also be a dictionary or array of multiple entry points
       // entry: pathList,
@@ -58,6 +67,27 @@ export default defineConfig({
         //   vue: "Vue",
         // },
         dir: "lib",
+        /**
+         * @description 以下代码是网目标组件文件夹下放置对应的index.css，目前也是临时方案
+         */
+        assetFileNames: (chunkInfo) => {
+          const keys = Object.keys(compCssMap);
+          let name = chunkInfo.name;
+
+          if (chunkInfo.name.endsWith(".css")) {
+            keys.some((key) => {
+              if (!compCssMap[key]) {
+                const arr = key.split("/");
+                arr.splice(arr.length - 1, 1, "index.css");
+                name = arr.join("/");
+                compCssMap[key] = name;
+                return true;
+              }
+              return false;
+            });
+          }
+          return name;
+        },
       },
     },
   },

@@ -16,7 +16,7 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import { SIDEBAR_KEY } from "../SideBar/types";
+import { SIDEBAR_KEY } from "../WSideBar/types";
 import { useParent } from "../../hooks/useRelation";
 
 defineOptions({
@@ -88,3 +88,4 @@ const onClick = () => {
   }
 }
 </style>
+../WSideBar/types
